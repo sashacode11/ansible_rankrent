@@ -7,7 +7,7 @@ workstation:
 	- sudo apt install openssh-server
 		- answer yes on each
 	- connect to another ssh's host: 
-		ssh <username of host want to connect>@<that ip address>
+		- ssh <username of host want to connect>@<ip address>
 			- answer yes on each
 	- check ssh key: 
 		ls -la .ssh
