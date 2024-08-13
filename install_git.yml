@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Install Git (Debian/Ubuntu)
+      apt:
+        name: git
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Install Git (RedHat/CentOS)
+      yum:
+        name: git
+        state: present
+      when: ansible_os_family == "RedHat"
