@@ -1,0 +1,67 @@
+- name: install git
+  tags: git
+  apt:
+    name: git
+    state: present
+
+- name: Install Node.js and Yarn
+  block:
+  - name: Install Node.js
+    apt:
+      name: nodejs
+      state: present
+  - name: Install npm
+    apt:
+      name: npm
+      state: present
+  - name: Install Yarn
+    npm:
+      name: yarn
+      global: yes
+      state: present
+
+- name: Install Java and Jenkins
+  block:
+  - name: install java
+    apt:
+      name: openjdk-17-jre-headless
+      state: present
+    tags: java
+
+  - name: Add jenkins GPG key
+    apt_key:
+      url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+      state: present
+    tags: jenkins
+
+  - name: Add jenkins repository
+    apt_repository:
+      repo: deb https://pkg.jenkins.io/debian-stable binary/
+      state: present
+      update_cache: true
+    tags: jenkins
+
+  - name: Install jenkins
+    apt:
+      name: jenkins
+      state: present
+    tags: jenkins
+
+- name: Start and enable jenkins
+  tags: jenkins
+  service:
+    name: jenkins
+    state: started
+    enabled: yes
+
+- name: Install apache2 package
+  tags: apache,apache2,ubuntu
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-php
+    state: latest
+
+
+
+

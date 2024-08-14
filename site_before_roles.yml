@@ -1,0 +1,40 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: updates repo cache (CentOS)
+    tags: always
+    dnf:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "CentOS"
+
+  - name: updates repo cache (Ubuntu)
+    tags: always
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: add ssh key for simone
+    authorized_key:
+      user: simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAv29zrAYikVevbxk7mqXvdu2MlIIcixPvs/k5dK9z+A ansible"
+
+- hosts: build_servers
+  become: true
+  roles:
+    - build_servers
+
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
+
+
