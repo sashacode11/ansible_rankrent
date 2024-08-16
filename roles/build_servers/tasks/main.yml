@@ -5,6 +5,7 @@
     state: present
 
 - name: Install Node.js and Yarn
+  tags: nodejs,yarn
   block:
   - name: Install Node.js
     apt:
@@ -21,47 +22,125 @@
       state: present
 
 - name: Install Java and Jenkins
+  tags: jenkins
   block:
   - name: install java
     apt:
       name: openjdk-17-jre-headless
       state: present
-    tags: java
 
   - name: Add jenkins GPG key
     apt_key:
       url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
       state: present
-    tags: jenkins
 
   - name: Add jenkins repository
     apt_repository:
       repo: deb https://pkg.jenkins.io/debian-stable binary/
       state: present
       update_cache: true
-    tags: jenkins
 
   - name: Install jenkins
     apt:
       name: jenkins
       state: present
-    tags: jenkins
-
-- name: Start and enable jenkins
-  tags: jenkins
-  service:
-    name: jenkins
-    state: started
-    enabled: yes
+    notify: enable_jenkins
 
 - name: Install apache2 package
-  tags: apache,apache2,ubuntu
+  tags: apache,apache2
   apt:
     name:
       - apache2
       - libapache2-mod-php
     state: latest
 
+- name: Install Required Python modules
+  tags: python
+  block:
+    - name: Ensure Python3 and pip3 are installed
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+        state: present
+        update_cache: yes
 
+    - name: Create a virtual environment in /opt/myenv
+      command: python3 -m venv /opt/myenv
+      args:
+        creates: /opt/myenv/bin/activate
+
+    - name: Install Python modules in the virtual environment
+      pip:
+        virtualenv: /opt/myenv
+        name:
+          - usaddress
+          - playwright
+          - js2py
+          - bs4
+          - phonenumbers
+          - tldextract
+          - pyyaml
+          - csvkit
+          - pandas
+          - numpy
+
+- name: Install Docker Engine on Ubuntu and Debian
+  tags: docker
+  block:
+    - name: Remove malformed Docker list file
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/download_docker_com_linux_{{ ansible_distribution|lower }}.list"
+        state: absent
+      changed_when: false
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: latest
+        update_cache: yes
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install Docker Engine
+      apt:
+        name: docker-ce
+        state: latest
+
+- name: Upload and run docker-compose.yml file for install Wiki
+  tags: wiki
+  block:
+    - name: Copy docker-compose.yml file
+      copy:
+        src: /home/sasha/docker/docker-compose.yml
+        dest: /home/docker-compose.yml
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Run Docker Compose
+      command: docker compose up -d
+      args:
+          chdir: /home
 
 

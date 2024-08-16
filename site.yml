@@ -2,14 +2,13 @@
 
 - hosts: all
   become: true
-  pre_tasks:
+  tasks:
 
   - name: updates repository index (apt)
     tags: always
     apt:
       update_cache: yes
     changed_when: false
-    when: ansible_os_family == "Debian"
 
 - hosts: all
   become: true

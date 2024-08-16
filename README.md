@@ -1,6 +1,18 @@
 # ansible_rankrent
 
-Steps from install and automate ansible
+Command to run Ansible:
+- Run all: ansible-playbook site.yml
+- Check what tags I have: ansible-playbook site.yml --list-tags
+- Run specific tag: ansible-playbook site.yml --tags 'specific tag'
+-------------------
+Change or add host/server:
+- Inventory:
+   - [workstations] local host machine, only set it to add ssh simone user and update cache.
+   - [build_servers] host/server which you want to remote install packages.
+   - you can add more name as your need, examples: [web_servers],[db_servers]. Remember edit in file site.yml to tell which you want to install in those new added.
+------------------
+
+Steps set SSH connection which is important to run Ansible
 
 workstation:
 - set ssh connection

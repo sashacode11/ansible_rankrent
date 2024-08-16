@@ -1,2 +1,7 @@
 [build_servers]
 ubuntu-3@192.168.122.116
+debian12-2@192.168.122.223
+
+[workstations]
+sasha@192.168.122.1
+
