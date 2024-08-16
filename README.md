@@ -13,6 +13,10 @@ Change or add host/server:
    - [build_servers] host/server which you want to remote install packages.
    - you can add more name as your need, examples: [web_servers],[db_servers]. Remember edit in file site.yml to tell which you want to install in those new added.
 ------------------
+Install Ansible:
+sudo apt update
+sudo apt install ansible
+------------------
 
 Steps set SSH connection which is important to run Ansible
 
