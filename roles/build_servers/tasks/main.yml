@@ -85,6 +85,7 @@
           - csvkit
           - pandas
           - numpy
+          - js2py
 
 - name: Install Docker Engine on Ubuntu and Debian
   tags: docker
@@ -127,20 +128,20 @@
         name: docker-ce
         state: latest
 
-- name: Upload and run docker-compose.yml file for install Wiki
-  tags: wiki
-  block:
-    - name: Copy docker-compose.yml file
-      copy:
-        src: /home/sasha/docker/docker-compose.yml
-        dest: /home/docker-compose.yml
-        owner: root
-        group: root
-        mode: '0644'
+#- name: Upload and run docker-compose.yml file for install Wiki
+ # tags: wiki
+  #block:
+   # - name: Copy docker-compose.yml file
+    #  copy:
+     #   src: /home/sasha/docker/docker-compose.yml
+      #  dest: /home/docker-compose.yml
+       # owner: root
+        #group: root
+        #mode: '0644'
 
-    - name: Run Docker Compose
-      command: docker compose up -d
-      args:
-          chdir: /home
+    #- name: Run Docker Compose
+     # command: docker compose up -d
+      #args:
+       #   chdir: /home
 
 
