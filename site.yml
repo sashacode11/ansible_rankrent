@@ -19,3 +19,9 @@
   become: true
   roles:
     - build_servers
+
+- hosts: workstations
+  become: true
+  roles:
+    - workstations
+

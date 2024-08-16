@@ -4,7 +4,9 @@ Command to run Ansible:
 - Run all: ansible-playbook site.yml
 - Check what tags I have: ansible-playbook site.yml --list-tags
 - Run specific tag: ansible-playbook site.yml --tags 'specific tag'
+- Run specific server: ansible-playbook  site.yml -l workstations
 -------------------
+
 Change or add host/server:
 - Inventory:
    - [workstations] local host machine, only set it to add ssh simone user and update cache.
