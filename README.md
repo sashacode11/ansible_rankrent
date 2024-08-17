@@ -25,6 +25,7 @@ Install the OpenSSH server on your workstation to accept incoming SSH connection
 sudo apt install openssh-server
 #Type yes when prompted to confirm the installation.
 
+**Explanation:**
 Step 2: Connect to Your Host
 Establish an initial SSH connection to your host to trust its SSH key:
 	ssh [username]@[ip address]
