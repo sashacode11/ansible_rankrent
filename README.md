@@ -21,8 +21,9 @@ sudo apt install ansible
 ## Part 1: Initial SSH Setup on Your Workstation
 Step 1: Install SSH Server
 Install the OpenSSH server on your workstation to accept incoming SSH connections:
-	sudo apt install openssh-server
-Type yes when prompted to confirm the installation.
+```bash
+sudo apt install openssh-server
+#Type yes when prompted to confirm the installation.
 
 Step 2: Connect to Your Host
 Establish an initial SSH connection to your host to trust its SSH key:
