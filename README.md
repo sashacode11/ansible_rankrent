@@ -1,10 +1,22 @@
 # ansible_rankrent
 
 Command to run Ansible:
-- Run all: ansible-playbook site.yml
-- Check what tags I have: ansible-playbook site.yml --list-tags
-- Run specific tag: ansible-playbook site.yml --tags 'specific tag'
-- Run specific server: ansible-playbook  site.yml -l workstations
+- Run all:
+  ```
+  ansible-playbook site.yml
+  ```
+- Check what tags I have:
+  ```
+  ansible-playbook site.yml --list-tags
+  ```
+- Run specific tag:
+  ```
+  ansible-playbook site.yml --tags '<specific tag>'
+  ```
+- Run specific server:
+  ```
+  ansible-playbook  site.yml -l <workstations>
+  ```
 -------------------
 
 Change or add host/server:
@@ -14,8 +26,10 @@ Change or add host/server:
    - you can add more name as your need, examples: [web_servers],[db_servers]. Remember edit in file site.yml to tell which you want to install in those new added.
 ------------------
 Install Ansible:
+```
 sudo apt update
 sudo apt install ansible
+```
 ------------------
 
 ## Part 1: Initial SSH Setup on Your Workstation
