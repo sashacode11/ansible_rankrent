@@ -71,22 +71,22 @@ ssh-add
 ```
  ---------------------------------------
 ## Part 2: Adding New Hosts After Setup
-Step 1: Prepare the New Host
-Install the OpenSSH server:
+Step 1: Update the Inventory File
+Ensure your inventory file correctly lists the new host
+
+Step 2: Verify SSH Access
+Before running your playbook, manually test SSH access from your Ansible control node to the new host:
 ```
-sudo apt install openssh-server
-``` 
-Ensure the SSH server is running:
+ssh <new host>
 ```
-systemctl status ssh
-``` 
-Step 2: Copy the Ansible Key to the New Host
-Copy the dedicated Ansible SSH key:
+
+Step 3: Copy the ansible public key to the new host:
 ```
-ssh-copy-id -i ~/.ssh/ansible.pub [username]@[new IP address]
+ssh-copy-id -i ~/.ssh/ansible.pub <new host>
 ```
-Step 3: Verify the Connection
-Connect to the new host using the Ansible key to ensure everything is set up correctly:
+
+Step 4:
+Run Ansible ad-hoc command to connect with new host
 ```
-ssh -i ~/.ssh/ansible [username]@[new IP address]
-```
+ansible-playbook site.yml --limit <new host>
+
