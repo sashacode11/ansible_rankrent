@@ -14,12 +14,15 @@
   become: true
   tasks:
   - name: create simone user
-    tags: always
     user:
       name: simone
       groups: root
       state: present
       createhome: yes
+
+  - name: Debug after creating simone
+    debug:
+      msg: "Simone created"
 
   - name: Add sudoers file for simone
     copy:
