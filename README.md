@@ -17,6 +17,10 @@ Command to run Ansible:
   ```
   ansible-playbook  site.yml -l <workstations>
   ```
+- Run specific server and specific tag:
+  ```
+  ansible-playbook -i inventory site.yml --limit inquirita.com --tags jenkins
+  ```
 -------------------
 
 Change or add host/server:
@@ -36,6 +40,8 @@ sudo apt install ansible
 Step 1: Install SSH Server
 Install the OpenSSH server on your workstation to accept incoming SSH connections:
 ```
+dpkg -s openssh-server | grep Status
+#Check if openssh-server installed, if not do install
 sudo apt install openssh-server
 #Type yes when prompted to confirm the installation.
 ```
