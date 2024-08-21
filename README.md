@@ -87,7 +87,7 @@ eval $(ssh-agent)
 ``` 
 Add your key to the agent to avoid passphrase prompts:
 ```
-ssh-add
+ssh-add /home/sasha/.ssh/id_ed25519
 ```
  ---------------------------------------
 ## Part 2: Adding New Hosts After Setup
