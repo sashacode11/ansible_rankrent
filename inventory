@@ -1,6 +1,9 @@
 [build_servers]
-inquirita.com  ansible_port=7822 ansible_ssh_private_key_file=~/.ssh/ansible
+ubuntu@192.168.122.201
+ubuntu-3@192.168.122.116
+debian12-2@192.168.122.223
+debian12-4@192.168.122.105
 
-[workstations]
-sasha@192.168.122.1
+#[workstations]
+#sasha@192.168.122.1
 

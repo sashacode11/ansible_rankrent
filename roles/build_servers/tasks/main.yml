@@ -128,20 +128,63 @@
         name: docker-ce
         state: latest
 
-#- name: Upload and run docker-compose.yml file for install Wiki
- # tags: wiki
-  #block:
-   # - name: Copy docker-compose.yml file
-    #  copy:
-     #   src: /home/sasha/docker/docker-compose.yml
-      #  dest: /home/docker-compose.yml
-       # owner: root
-        #group: root
-        #mode: '0644'
+    #- name: Add current user to the docker group
+     # tags: docker
+      #user:
+       # name: "{{ ansible_user }}"
+        #groups: docker
+        #append: yes
+- name: Install K3s
+  tags: k3s
+  block:
+    - name: Download and install k3s
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+      args:
+        creates: /usr/local/bin/k3s
 
-    #- name: Run Docker Compose
-     # command: docker compose up -d
-      #args:
-       #   chdir: /home
+    - name: Set KUBECONFIG environment variable for all users
+      copy:
+        content: "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
+        dest: /etc/profile.d/k3s.sh
+        mode: '0644'
 
+    - name: Enable and start K3s service
+      systemd:
+        name: k3s
+        enabled: yes
+        state: started
 
+    - name: Ensure KUBECONFIG file permissions are correct
+      file:
+        path: /etc/rancher/k3s/k3s.yaml
+        mode: '0644'
+        state: file
+
+- name: Install minikube
+  tags: minikube
+  block:
+    - name: Install kubectl
+      shell: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        mv kubectl /usr/local/bin/
+      args:
+        creates: /usr/local/bin/kubectl
+
+    - name: Download and install Minikube
+      shell: |
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+        sudo dpkg -i minikube_latest_amd64.deb
+      args:
+        creates: /usr/local/bin/minikube
+
+    - name: Check if Minikube is installed
+      stat:
+        path: /usr/local/bin/minikube
+      register: minikube_exists
+
+    - name: Start Minikube
+      shell: |
+        minikube start --driver=docker
+      when: minikube_exists.stat.exists
