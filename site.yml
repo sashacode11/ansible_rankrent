@@ -14,8 +14,32 @@
 
 - hosts: all
   become: true
+  tags:
+    - base
   roles:
     - base
+
+- hosts: aws_vms
+  become: true
+  roles:
+    - build_servers
+
+# Play 1: Setup K3s on Master Node
+- name: Setup K3s on Master Node
+  hosts: Master
+  become: yes
+  roles:
+    - role: k3s_nodes
+      tags: master-node
+
+# Play 2: Install K3s on Worker Nodes
+- name: Install K3s on Worker Nodes
+  hosts: Worker-1,Worker-2
+  become: yes
+  roles:
+    - role: k3s_nodes
+      tags: worker-node
+
 
 - hosts: build_servers
   become: true
@@ -26,4 +50,3 @@
   become: true
   roles:
     - workstations
-

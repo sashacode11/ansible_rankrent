@@ -21,6 +21,10 @@ Command to run Ansible:
   ```
   ansible-playbook -i inventory site.yml --limit inquirita.com --tags jenkins
   ```
+- Run roles base and exclude specific tag:
+  ```
+  ansible-playbook site.yml --tags base --skip-tags ssh
+  ```
 -------------------
 
 Change or add host/server:

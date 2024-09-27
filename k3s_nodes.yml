@@ -1,0 +1,47 @@
+---
+- name: Install K3s on Master Node
+  hosts: master
+  become: yes
+  tasks:
+    - name: Install K3s server on Master
+      shell: |
+        curl -sfL https://get.k3s.io | sh -
+
+    - name: Get K3s node token
+      shell: cat /var/lib/rancher/k3s/server/node-token
+      register: k3s_token
+      when: inventory_hostname == 'master'
+
+    - name: Get K3s master IP address
+      set_fact:
+        k3s_master_ip: "{{ ansible_host }}"
+
+- name: Install K3s on Worker Nodes
+  hosts: worker-1,worker-2
+  become: yes
+  tasks:
+    - name: Install K3s agent on Worker nodes
+      shell: |
+        curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['master'].k3s_master_ip }}:6443 K3S_TOKEN={{ hostvars['master'].k3s_token.stdout }} sh -
+      when: inventory_hostname != 'master'
+      register: k3s_agent_install
+      ignore_errors: yes
+
+    - name: Ensure K3s agent is started on Worker nodes
+      systemd:
+        name: k3s-agent
+        state: started
+        enabled: yes
+      when: inventory_hostname != 'master'
+
+    #- name: Debug K3s agent installation output
+     # debug:
+      #  var: k3s_agent_install.stdout
+
+    #- name: Print Master IP and K3S_TOKEN
+     # debug:
+      #  msg:
+       #   - "master IP: {{ hostvars['master'].k3s_master_ip }}"
+        #  - "K3S_TOKEN: {{ hostvars['master'].k3s_token.stdout }}"
+      #when: inventory_hostname != "master"
+

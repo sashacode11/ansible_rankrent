@@ -1,0 +1,36 @@
+---
+- name: Remove K3s from Master Node
+  hosts: master
+  become: yes
+  tags: k3s
+  tasks:
+    - name: Run K3s uninstall script on Master
+      shell: sudo /usr/local/bin/k3s-uninstall.sh
+
+    - name: Verify K3s Removal on Master
+      shell: systemctl status k3s
+      #ignore_errors: yes
+      register: result_k3s
+      failed_when: "'not found' not in result_k3s.stderr"
+
+    #- name: Display K3s status on Master
+     # debug:
+      #  var: result.stdout
+
+- name: Remove K3s from Worker Nodes
+  hosts: worker-1,worker-2
+  become: yes
+  tags: k3s
+  tasks:
+    - name: Run K3s agent uninstall script on Worker nodes
+      shell: sudo /usr/local/bin/k3s-agent-uninstall.sh
+
+    - name: Verify K3s Removal on Worker nodes
+      shell: systemctl status k3s-agent
+#      ignore_errors: yes
+      register: result_k3s_agent
+      failed_when: "'not found' not in result_k3s_agent.stderr"
+
+    #- name: Display K3s agent status on Worker nodes
+     # debug:
+      #  var: result.stdout

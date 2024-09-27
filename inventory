@@ -1,8 +1,36 @@
-[build_servers]
-ubuntu@192.168.122.201
-ubuntu-3@192.168.122.116
-debian12-2@192.168.122.223
-debian12-4@192.168.122.105
+#[master]
+#debian12-2@192.168.122.223
+
+#[workers]
+#ubuntu-3@192.168.122.116
+#debian12-4@192.168.122.105
+
+[vms]
+master ansible_host=debian12-2@192.168.122.223
+worker-1 ansible_host=ubuntu-3@192.168.122.116
+worker-2 ansible_host=debian12-4@192.168.122.105
+
+[workers]
+worker-1
+worker-2
+
+#[master]
+#master
+
+#[build_servers]
+#ubuntu@192.168.122.201
+#ubuntu-3@192.168.122.116
+#debian12-2@192.168.122.223
+#debian12-4@192.168.122.105
+
+#[aws_vms]
+#Master ansible_host=13.250.10.94
+#Worker-1 ansible_host=47.128.64.165
+#Worker-2 ansible_host=54.179.74.137
+
+#[aws_vms:vars]
+#ansible_user=ubuntu
+#ansible_ssh_private_key_file=~/aws/key.pem
 
 #[workstations]
 #sasha@192.168.122.1

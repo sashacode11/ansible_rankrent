@@ -2,6 +2,8 @@
   authorized_key:
      user: simone
      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAv29zrAYikVevbxk7mqXvdu2MlIIcixPvs/k5dK9z+A ansible"
+  tags:
+    - ssh
 
 - name: generate sshd_config file from template
   tags: ssh
